@@ -1,0 +1,33 @@
+---
+- name: Automate SSH connections
+  hosts: all
+  serial: 1
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Install virtual environment
+      pip:
+        name: virtualenv
+        executable: /usr/bin/pip3.6
+        state: latest
+
+    - name: Create virtualenv root directory
+      file:
+        path: "{{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: 0755
+
+    - name: Set up virtual environment
+      shell: "virtualenv -p python3.6 {{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+      become_user: vagrant
+      changed_when: no
+
+    - name: Install all Python packages
+      pip:
+        name: '{{ jupyter_notebook.python_packages }}'
+        virtualenv: "{{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+        state: latest
+      become_user: vagrant
