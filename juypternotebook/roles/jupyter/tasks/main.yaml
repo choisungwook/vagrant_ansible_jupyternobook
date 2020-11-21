@@ -1,0 +1,42 @@
+---
+- name: Setup all the repositories
+  yum:
+    name: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].repos }}'
+    state: present
+
+- name: Install all required packages
+  yum:
+    name: '{{ jupyter_notebook.distro[ansible_distribution | lower][ansible_distribution_major_version].packages }}'
+    state: latest
+
+- name: Install virtual environment
+  pip:
+    name:
+    - setuptools
+    - virtualenv
+    executable: /usr/bin/pip3
+    state: latest
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Create virtualenv root directory
+  file:
+    path: "{{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+
+- name: Set up virtual environment
+  shell: "virtualenv -p python3.6 {{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+  become_user: vagrant
+  changed_when: no
+
+- name: Install all Python packages
+  pip:
+    name: '{{ jupyter_notebook.python_packages }}'
+    virtualenv: "{{ jupyter_notebook.virtualenv | default('/data/jupyter_workspace') }}"
+    state: latest
+  become_user: vagrant
+  vars:
+    ansible_python_interpreter: /usr/bin/python3

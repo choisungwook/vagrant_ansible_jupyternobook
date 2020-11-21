@@ -1,0 +1,16 @@
+---
+jupyter_notebook:
+  distro:
+    'centos':
+      '7':
+        repos:
+          - 'epel-release'
+
+        packages:
+          - 'python36'
+          - 'python36-devel'
+          - 'python36-pip'
+          - 'vim'
+
+  python_packages:
+    - jupyter
