@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "ansible-client#{i}" do |cfg|
       cfg.vm.box = IMAGE_NAME
       cfg.vm.network "private_network", ip: IP_CLIENT + "#{i+10}" , virtualbox__intnet: INTNET
+      cfg.vm.network :forwarded_port, guest: 8888, host: 8888, id: 'jupyternotebook'
       cfg.vm.hostname = "ansible-client#{i}"
       
       cfg.vm.provider "virtualbox" do |v|
