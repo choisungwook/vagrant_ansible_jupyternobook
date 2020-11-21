@@ -1,7 +1,6 @@
-INTNET = "ansible-cluster"
 IMAGE_NAME = "centos/7"
-IP_MASTER = "192.168.50.200"
-IP_CLIENT = "192.168.50."
+IP_MASTER = "192.168.219.181"
+IP_CLIENT = "192.168.219."
 N = 1
 
 Vagrant.configure("2") do |config|
@@ -11,7 +10,7 @@ Vagrant.configure("2") do |config|
   (1..N).each do |i|
     config.vm.define "ansible-client#{i}" do |cfg|
       cfg.vm.box = IMAGE_NAME
-      cfg.vm.network "private_network", ip: IP_CLIENT + "#{i+10}" , virtualbox__intnet: INTNET
+      cfg.vm.network "public_network", ip: IP_CLIENT + "#{i+10}" 
       cfg.vm.network :forwarded_port, guest: 8888, host: 8888, id: 'jupyternotebook'
       cfg.vm.hostname = "ansible-client#{i}"
       
@@ -31,7 +30,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "ansible-server" do |cfg|
     cfg.vm.box = IMAGE_NAME
     cfg.vm.hostname = "ansible-server-2"
-    cfg.vm.network "private_network", ip: IP_MASTER, virtualbox__intnet: INTNET
+    cfg.vm.network "public_network", ip: IP_MASTER
 
     cfg.vm.provider "virtualbox" do |v|
       v.memory = 2048
