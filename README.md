@@ -25,3 +25,9 @@ vagrant up
 * [3] 공식문서-playbooks example: https://github.com/ansible/ansible-examples
 * [4] 블로그: gather_facts: https://ossian.tistory.com/98
 * [5] 번역: https://github.com/mcchae/ansible_doc_ko/blob/master/Asible%20%EC%86%8C%EA%B0%9C.md
+* [6] 블로그-default설명: https://blog.leocat.kr/notes/2018/02/11/ansible-default-value
+* [7] github-ansible&jupyternotebook install project: https://github.com/huydhn/ansible-jupyter-notebook.git
+* [8] 블로그-파일생성: https://www.mydailytutorials.com/ansible-create-files/
+
+# 6. todo
+* hosts파일 만들때 home directory변수 자동 설정
