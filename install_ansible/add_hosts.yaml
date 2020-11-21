@@ -1,0 +1,12 @@
+---
+- name: configure ansible hosts
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: add hosts in /etc/ansible/hosts
+      blockinfile:
+        path: /etc/ansible/hosts
+        block: |
+          [client]
+          192.168.50.11
