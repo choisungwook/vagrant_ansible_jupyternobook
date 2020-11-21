@@ -29,22 +29,28 @@ Vagrant.configure("2") do |config|
   # ansible-server
   config.vm.define "ansible-server" do |cfg|
     cfg.vm.box = IMAGE_NAME
-    cfg.vm.hostname = "ansible-server"
+    cfg.vm.hostname = "ansible-server-2"
     cfg.vm.network "private_network", ip: IP_MASTER, virtualbox__intnet: INTNET
 
     cfg.vm.provider "virtualbox" do |v|
       v.memory = 2048
       v.cpus = 2
-      v.name =  "ansible-server"
+      v.name =  "ansible-server-2"
     end
     cfg.vm.provision  "shell", inline: <<-SCRIPT
       yum install epel-release -y
-      yum install ansible -y
+      yum install python36 libselinux-python3 -y 
+      yum install sshpass -y
+      sudo pip3 install ansible
     SCRIPT
 
     # copy ansible files
     cfg.vm.provision "file", source: "./install_ansible", destination: "install_ansible"
-    cfg.vm.provision "shell", inline: "ansible-playbook ./install_ansible/add_hosts.yaml"
-    cfg.vm.provision "shell", inline: "ansible-playbook ./install_ansible/configure_ssh.yaml", privileged: false
+    cfg.vm.provision "shell", inline: "ansible-playbook ./install_ansible/add_hosts.yaml", privileged: false
+    cfg.vm.provision "shell", inline: "ansible-playbook ./install_ansible/configure_ssh.yaml -i /home/vagrant/hosts", privileged: false
+
+    # install a jupyter notebook
+    cfg.vm.provision "file", source: "./juypternotebook", destination: "juypternotebook"
+    cfg.vm.provision "shell", inline: "ansible-playbook ./juypternotebook/site.yaml -i /home/vagrant/hosts", privileged: false
   end
 end
