@@ -1,0 +1,2 @@
+# vagrant_ansible_jupyternobook
+vagrant와 ansible로 jupyternotebook 설치
