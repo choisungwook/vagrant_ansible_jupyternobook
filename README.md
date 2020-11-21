@@ -1,5 +1,5 @@
 # 1. 프로젝트 개요
-vagrant로 ansible server, client 구축
+vagrant와 ansible로 jupyter notebook 설치
 
 # 2. 준비
 * virtualbox 설치
@@ -9,15 +9,24 @@ vagrant로 ansible server, client 구축
 * 네트워크는 NAT, INTERNET 총 2개로 구성
 ```sh
 vagrant up
+cd /data
+. ./jupyter_workspace/bin/activate
+(jupyter_workspace) jupyter notebook --ip [ip]
 ```
+
+![](./imgs/result.PNG)
+
+![](./imgs/result2.PNG)
+
 
 # 4. 설정 수정
 ## 4.1 클라이언트 수 추가
 * vagranfile파일: N변수 수정
 * install_ansible/add_hosts.yaml파일: client그룹에 IP추가
-## 4.2 IP 수정
+## 4.2 IP 수정(default: nat + bridge)
 * ansible서버 IP: vagrantfile의 IP_MASTER변수 수정
 * ansible클라이언트 IP: vagrantfile의 IP_CLIENT변수 수정
+* ./install_ansible/add_hosts.yaml CLIENT IP 수정
 
 # 5. 참고자료
 * [1] 블로그-ansible구축: https://daddyprogrammer.org/post/7369/ansible-vagrant/
@@ -31,3 +40,4 @@ vagrant up
 
 # 6. todo
 * hosts파일 만들때 home directory변수 자동 설정
+* bridge네트워크 인터페이스 적용시 기존에 있는 NAT제거 -> vagrant ssh 접속 때문에 못지우려나?
